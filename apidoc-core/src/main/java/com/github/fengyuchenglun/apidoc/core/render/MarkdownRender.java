@@ -6,8 +6,10 @@ import com.github.fengyuchenglun.apidoc.core.common.helper.FileHelper;
 import com.github.fengyuchenglun.apidoc.core.schema.Project;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Path;
 
@@ -42,21 +44,30 @@ public class MarkdownRender implements ProjectRender {
         }
     }
 
-    private void build(Project project) throws Exception {
+    private void build(Project project) {
         String templatePath = ApiDoc.getInstance().getContext().getMarkdownTemplate();
         String id = ApiDoc.getInstance().getContext().getId();
-        Path buildPath = ApiDoc.getInstance().getContext().getBuildPath();
-        Path markdownFile = buildPath.resolve(id).resolve(id + Constants.MARKDOWN_EXTENSION);
-
-        Template template = configuration.getTemplate(templatePath);
-
+        Path buildPath = ApiDoc.getInstance().getContext().getBuildPath().resolve(id);
         StringWriter writer = new StringWriter();
-        template.process(project, writer);
-        writer.flush();
-        writer.close();
 
-        FileHelper.write(markdownFile, writer.getBuffer().toString());
-        log.info("Build Markdown {}", markdownFile);
+        project.getBooks().forEach((name, book) -> {
+            Path markdownFile = buildPath.resolve(name + Constants.MARKDOWN_EXTENSION);
+            try {
+                Template template = configuration.getTemplate(templatePath);
+                template.process(project, writer);
+            } catch (TemplateException | IOException e) {
+                log.error("Write markdown fail:{}", e.getMessage());
+            } finally {
+                writer.flush();
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    log.error("Write markdown fail:{}", e.getMessage());
+                }
+            }
+            FileHelper.write(markdownFile, writer.getBuffer().toString());
+            log.info("Build Markdown {}", markdownFile);
+        });
 
     }
 }

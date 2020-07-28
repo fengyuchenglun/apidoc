@@ -32,7 +32,7 @@ public class ApidocTest {
     public void appTest() {
         // 测试枚举
         Context context = new Context();
-        context.setRenders(Lists.newArrayList(new MarkdownRender()));
+//        context.setRenders(Lists.newArrayList(new MarkdownRender()));
         context.addSource(Paths.get("").resolve("src/test/java").toAbsolutePath());
         ApiDoc apiDoc = new ApiDoc(context);
         apiDoc.parse();

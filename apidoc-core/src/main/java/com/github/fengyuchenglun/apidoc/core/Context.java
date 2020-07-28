@@ -90,7 +90,7 @@ public class Context {
      * 名称
      */
     @Setter
-    private String name;
+    private String name= DEFAULT_PROJECT_ID;
     /**
      * 描述
      */

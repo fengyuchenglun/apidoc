@@ -1,10 +1,7 @@
 package com.github.fengyuchenglun.apidoc.core.schema;
 
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.*;
 
