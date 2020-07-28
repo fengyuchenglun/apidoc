@@ -1,0 +1,4 @@
+rootProject.name = 'apidoc'
+include 'apidoc-core'
+include 'apidoc-springmvc'
+
