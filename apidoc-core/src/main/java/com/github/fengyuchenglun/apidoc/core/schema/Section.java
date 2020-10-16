@@ -1,5 +1,6 @@
 package com.github.fengyuchenglun.apidoc.core.schema;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.github.fengyuchenglun.apidoc.core.common.ObjectMappers;
 import com.github.fengyuchenglun.apidoc.core.common.QueryStringBuilder;
 import com.github.fengyuchenglun.apidoc.core.common.helper.StringHelper;
@@ -82,7 +83,7 @@ public class Section extends Node {
     /**
      * 是否为统一结果返回
      */
-    Boolean isResultData=false;
+    Boolean isResultData = false;
 
     /**
      * Sets parameter.
@@ -108,7 +109,13 @@ public class Section extends Node {
      * @param parameter the parameter
      */
     public void setRequestBodyParameters(JsonNode parameter) {
-        ((ObjectNode) this.requestBodyParameters).setAll((ObjectNode) parameter);
+        if (parameter.isArray()) {
+            this.requestBodyParameters = ObjectMappers.instance.createArrayNode();
+            ((ArrayNode) this.requestBodyParameters).add(parameter);
+        } else {
+            ((ObjectNode) this.requestBodyParameters).setAll((ObjectNode) parameter);
+
+        }
     }
 
     /**

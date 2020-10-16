@@ -5,6 +5,7 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.javadoc.JavadocBlockTag;
 import com.github.javaparser.resolution.declarations.ResolvedFieldDeclaration;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserFieldDeclaration;
 
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 /**
  * The type Field helper.
+ *
  * @author duanledexianxianxian
  */
 public class FieldHelper {
@@ -57,7 +59,7 @@ public class FieldHelper {
      * 获取常量
      *
      * @param declaration the declaration
-     * @return constants
+     * @return constants constants
      */
     public static List<Cell<String>> getConstants(ClassOrInterfaceDeclaration declaration) {
         List<Cell<String>> cells = new ArrayList<>();

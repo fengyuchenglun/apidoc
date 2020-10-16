@@ -28,6 +28,7 @@ import java.util.Objects;
  */
 @Slf4j
 public class AsciiDocRender implements ProjectRender {
+    private final String ADHOC = "adhoc.ftl";
 
     /**
      * The constant attrs.
@@ -36,6 +37,11 @@ public class AsciiDocRender implements ProjectRender {
             AsciiDoc.attr(AsciiDoc.DOCTYPE, AsciiDoc.BOOK),
             AsciiDoc.attr(AsciiDoc.TOC, AsciiDoc.LEFT), AsciiDoc.attr(AsciiDoc.TOC_LEVEL, 2), AsciiDoc.attr(AsciiDoc.TOC_TITLE, "TOC"),
             AsciiDoc.attr(AsciiDoc.SOURCE_HIGHLIGHTER, AsciiDoc.HIGHLIGHTJS)).toArray(new CharSequence[0]);
+
+    @Override
+    public String template() {
+        return ADHOC;
+    }
 
     @Override
     public void render(Project project) {

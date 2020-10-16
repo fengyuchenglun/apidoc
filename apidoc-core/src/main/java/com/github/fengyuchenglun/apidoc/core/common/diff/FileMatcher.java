@@ -15,11 +15,15 @@ import java.util.List;
 
 /**
  * 文件对比工具
+ *
  * @author duanledexianxianxian
  */
 @Getter
 public class FileMatcher {
 
+    /**
+     * The Match patcher.
+     */
     MatchPatcher matchPatcher = new MatchPatcher();
 
     /**
@@ -29,10 +33,24 @@ public class FileMatcher {
 
     private List<MatchPatcher.Diff> diffs;
 
+    /**
+     * Compare int.
+     *
+     * @param template the template
+     * @param build    the build
+     * @return the int
+     */
     public int compare(Path template, Path build) {
         return compare(readFile(template), readFile(build));
     }
 
+    /**
+     * Compare int.
+     *
+     * @param templateText the template text
+     * @param buildText    the build text
+     * @return the int
+     */
     public int compare(String templateText, String buildText) {
         diffs = matchPatcher.diff_main(templateText, buildText, true);
         for (MatchPatcher.Diff diff : diffs) {
@@ -43,6 +61,12 @@ public class FileMatcher {
         return changs;
     }
 
+    /**
+     * Render html.
+     *
+     * @param templateHtml the template html
+     * @param resultHtml   the result html
+     */
     public void renderHtml(Path templateHtml, Path resultHtml) {
         String results = matchPatcher.diff_prettyHtml(diffs);
         String[] lines = br(results).replaceAll("<span>|</span>", "").split("\n");
@@ -70,9 +94,8 @@ public class FileMatcher {
     /**
      * 读取文件内容
      *
-     * @param path
-     * @return
-     * @throws IOException
+     * @param path the path
+     * @return the string
      */
     public static String readFile(Path path) {
         // Read a file from disk and return the text contents.
@@ -90,6 +113,14 @@ public class FileMatcher {
         return sb.toString();
     }
 
+    /**
+     * Write file.
+     *
+     * @param file        the file
+     * @param content     the content
+     * @param charset     the charset
+     * @param openOptions the open options
+     */
     public void writeFile(Path file, String content, Charset charset, OpenOption... openOptions) {
         if (file.getParent() != null) {
             try {

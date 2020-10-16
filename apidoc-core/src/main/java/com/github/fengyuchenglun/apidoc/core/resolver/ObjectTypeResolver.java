@@ -15,6 +15,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Optional;
 
+import static com.github.fengyuchenglun.apidoc.core.common.Constants.TAG_CUSTOM_JAVA_DOC_IGNORE;
+import static com.github.fengyuchenglun.apidoc.core.common.Constants.TAG_CUSTOM_JAVA_DOC_REPLACE;
+
 /**
  * java bean解析
  *
@@ -34,7 +37,9 @@ public class ObjectTypeResolver implements TypeResolver {
         ObjectTypeDescription typeDescription = new ObjectTypeDescription();
 
         typeDescription.setType(referenceType.getTypeDeclaration().getName());
-        ((JavaParserClassDeclaration) referenceType.getTypeDeclaration()).getWrappedNode().getComment().ifPresent(typeDescription::accept);
+        if (referenceType.getTypeDeclaration() instanceof JavaParserClassDeclaration) {
+            ((JavaParserClassDeclaration) referenceType.getTypeDeclaration()).getWrappedNode().getComment().ifPresent(typeDescription::accept);
+        }
         //类型解析缓冲池，防止循环引用
         if (!ReferenceContext.getInstance().push(referenceType.describe())) {
             return typeDescription;
@@ -54,6 +59,9 @@ public class ObjectTypeResolver implements TypeResolver {
             if (declaredField.isStatic()) {
                 continue;
             }
+            if (CommentHelper.isFieldTagPresent(declaredField, TAG_CUSTOM_JAVA_DOC_IGNORE)) {
+                continue;
+            }
             ResolvedType fieldType = declaredField.getType();
 
             if (fieldType.isReferenceType()) {
@@ -66,6 +74,15 @@ public class ObjectTypeResolver implements TypeResolver {
                 if (optional.isPresent()) {
                     fieldType = optional.get();
                 }
+            }
+
+            // 字段注释带有replace标签
+            if (CommentHelper.isFieldTagPresent(declaredField, TAG_CUSTOM_JAVA_DOC_REPLACE)) {
+                TypeDescription fieldTypeDescription = ApiDoc.getInstance().getTypeResolvers().resolve(fieldType);
+                if (fieldTypeDescription.isAvailable() && fieldTypeDescription.isObject()) {
+                    typeDescription.merge(fieldTypeDescription.asObject());
+                }
+                continue;
             }
 
             TypeDescription fieldDescription = ApiDoc.getInstance().getTypeResolvers().resolve(fieldType);

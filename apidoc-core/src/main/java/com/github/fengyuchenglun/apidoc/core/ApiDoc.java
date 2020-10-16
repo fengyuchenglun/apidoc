@@ -1,9 +1,9 @@
 package com.github.fengyuchenglun.apidoc.core;
 
-import com.github.fengyuchenglun.apidoc.core.common.helper.StringHelper;
 import com.github.fengyuchenglun.apidoc.core.parser.ParserStrategy;
 import com.github.fengyuchenglun.apidoc.core.parser.VisitorParser;
 import com.github.fengyuchenglun.apidoc.core.render.ProjectRender;
+import com.github.fengyuchenglun.apidoc.core.resolver.DynamicTypeSolver;
 import com.github.fengyuchenglun.apidoc.core.resolver.TypeResolvers;
 import com.github.fengyuchenglun.apidoc.core.schema.Project;
 import com.github.javaparser.ParseResult;
@@ -15,7 +15,9 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSol
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JarTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
+import com.github.javaparser.utils.Pair;
 import com.github.javaparser.utils.SourceRoot;
+import com.github.javaparser.utils.SourceZip;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,11 +48,11 @@ public class ApiDoc {
      * 项目信息
      */
     @Getter
-    private Project project = new Project();
+    private final Project project = new Project();
     /**
      * The Visitor parser.
      */
-    private VisitorParser visitorParser = new VisitorParser();
+    private final VisitorParser visitorParser = new VisitorParser();
     /**
      * The Parser configuration.
      */
@@ -62,12 +64,18 @@ public class ApiDoc {
     @Setter
     @Getter
     ClassOrInterfaceDeclaration resultDataClassOrInterfaceDeclaration;
+    /**
+     * 分页统一结果对象
+     */
+    @Setter
+    @Getter
+    ClassOrInterfaceDeclaration pageResultDataClassOrInterfaceDeclaration;
 
     /**
      * The Type resolvers.
      */
     @Getter
-    private TypeResolvers typeResolvers = new TypeResolvers();
+    private final TypeResolvers typeResolvers = new TypeResolvers();
 
     /**
      * Instantiates a new ApiDoc.
@@ -134,6 +142,8 @@ public class ApiDoc {
         }
         // 反射?
         typeSolver.add(new ReflectionTypeSolver());
+        typeSolver.add(new DynamicTypeSolver(context.getScanPackages()));
+
 
         parserConfiguration = new ParserConfiguration();
         parserConfiguration.setSymbolResolver(new JavaSymbolSolver(typeSolver));
@@ -176,6 +186,19 @@ public class ApiDoc {
      * @return project project
      */
     public Project parse() {
+        for (Path jar : this.context.getJars()) {
+            SourceZip root = new SourceZip(jar, parserConfiguration);
+            try {
+                for (Pair<Path, ParseResult<CompilationUnit>> result : root.parse()) {
+                    if (result.b.isSuccessful() && result.b.getResult().isPresent()) {
+                        //note: 访问解析器 +当前项目上下文
+                        result.b.getResult().get().accept(visitorParser, project);
+                    }
+                }
+            } catch (IOException e) {
+                log.warn("parse root {} error {}", root, e.getMessage());
+            }
+        }
         for (Path source : this.context.getSources()) {
             SourceRoot root = new SourceRoot(source, parserConfiguration);
             try {

@@ -46,6 +46,7 @@ public class ExpressionHelper {
             return expr.asArrayInitializerExpr().getValues().stream().map(ExpressionHelper::getValue).collect(Collectors.toList());
         }
         if (expr instanceof Resolvable) {
+//            return String.valueOf(resolve((Resolvable) expr));
             return String.valueOf(resolve((Resolvable) expr));
         }
         return expr.toString();
@@ -57,16 +58,16 @@ public class ExpressionHelper {
      * @param expression the expression
      * @return the string
      */
-    public static String getStringValue(Expression expression){
-        if(expression.isStringLiteralExpr()){
+    public static String getStringValue(Expression expression) {
+        if (expression.isStringLiteralExpr()) {
             return expression.asStringLiteralExpr().getValue();
-        }else if(expression.isArrayInitializerExpr()){
+        } else if (expression.isArrayInitializerExpr()) {
             NodeList<Expression> values = expression.asArrayInitializerExpr().getValues();
-            if(values.size()>0){
+            if (values.size() > 0) {
                 return getStringValue(values.get(0));
             }
-        }else if(expression instanceof Resolvable){
-            return String.valueOf(resolve((Resolvable)expression));
+        } else if (expression instanceof Resolvable) {
+            return String.valueOf(resolve((Resolvable) expression));
         }
         return expression.toString();
     }
@@ -77,18 +78,18 @@ public class ExpressionHelper {
      * @param expression the expression
      * @return the list
      */
-    public static List<String> getStringValues(Expression expression){
+    public static List<String> getStringValues(Expression expression) {
         List<String> results = new ArrayList<>();
-        if(expression.isStringLiteralExpr()){
+        if (expression.isStringLiteralExpr()) {
             results.add(expression.asStringLiteralExpr().getValue());
-        }else if(expression.isArrayInitializerExpr()) {
+        } else if (expression.isArrayInitializerExpr()) {
             NodeList<Expression> values = expression.asArrayInitializerExpr().getValues();
             for (Expression value : values) {
                 results.addAll(getStringValues(value));
             }
-        }else if(expression instanceof Resolvable){
-            results.add(String.valueOf(resolve((Resolvable)expression)));
-        }else{
+        } else if (expression instanceof Resolvable) {
+            results.add(String.valueOf(resolve((Resolvable) expression)));
+        } else {
             results.add(expression.toString());
         }
         return results;
@@ -100,17 +101,18 @@ public class ExpressionHelper {
      * @param resolvable the resolvable
      * @return the object
      */
-    private static Object resolve(Resolvable resolvable){
+    private static Object resolve(Resolvable resolvable) {
         try {
             Object resolve = resolvable.resolve();
-            if(resolve instanceof JavaParserFieldDeclaration){
+            if (resolve instanceof JavaParserFieldDeclaration) {
                 Optional<Expression> initializer = ((JavaParserFieldDeclaration) resolve).getVariableDeclarator().getInitializer();
                 if (initializer.isPresent()) {
                     return getStringValue(initializer.get());
                 }
             }
         } catch (Exception e) {
-            log.warn("resolve expression {} error: {}",resolvable.toString(),e.getMessage());
+            log.warn("resolve expression {} error: {}", resolvable.toString(), e.getMessage());
+            return "";
         }
         return resolvable;
     }

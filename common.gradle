@@ -1,0 +1,6 @@
+ext {
+    javaConfig = [
+            sourceCompatibility: 1.8,
+            targetCompatibility: 1.8
+    ]
+}

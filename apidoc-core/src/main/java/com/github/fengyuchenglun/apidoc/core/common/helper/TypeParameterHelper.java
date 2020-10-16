@@ -10,15 +10,18 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
+ * The type Type parameter helper.
+ *
  * @author duanledexianxianxian
  */
 public class TypeParameterHelper {
 
     /**
      * 获取泛型信息
-     * @param referenceType
-     * @param index 位置信息
-     * @return
+     *
+     * @param referenceType the reference type
+     * @param index         位置信息
+     * @return optional optional
      */
     public static Optional<ResolvedType> getTypeParameter(ResolvedReferenceType referenceType, int index){
         List<Pair<ResolvedTypeParameterDeclaration, ResolvedType>> typeParameters = referenceType.getTypeParametersMap();
@@ -31,9 +34,10 @@ public class TypeParameterHelper {
 
     /**
      * 获取泛型信息
-     * @param referenceType
-     * @param a 如 T E 等
-     * @return
+     *
+     * @param referenceType the reference type
+     * @param a             the a
+     * @return the optional
      */
     public static Optional<ResolvedType> getTypeParameter(ResolvedReferenceType referenceType, String a){
         List<Pair<ResolvedTypeParameterDeclaration, ResolvedType>> typeParameters = referenceType.getTypeParametersMap();
@@ -47,8 +51,10 @@ public class TypeParameterHelper {
 
     /**
      * 使用父类的泛型
-     * @param parent
-     * @param field
+     *
+     * @param parent the parent
+     * @param field  the field
+     * @return the resolved type
      */
     public static ResolvedType useClassTypeParameter(ResolvedReferenceType parent, ResolvedReferenceType field ){
         for (Pair<ResolvedTypeParameterDeclaration, ResolvedType> pair : field.getTypeParametersMap()) {

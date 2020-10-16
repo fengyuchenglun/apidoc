@@ -7,7 +7,7 @@ import com.github.javaparser.resolution.declarations.ResolvedEnumDeclaration;
 import com.github.javaparser.resolution.types.ResolvedType;
 
 /**
- * The type Enum type resolver.
+ * 枚举类型解析器.
  *
  * @author duanledexianxianxian
  */
@@ -20,7 +20,7 @@ public class EnumTypeResolver implements TypeResolver {
     @Override
     public TypeDescription resolve(ResolvedType type) {
         ResolvedEnumDeclaration enumDeclaration = type.asReferenceType().getTypeDeclaration().asEnum();
-        TypeDescription description = new StringTypeDescription(enumDeclaration.getName(),"");
+        TypeDescription description = new StringTypeDescription(enumDeclaration.getName(), "");
         for (ResolvedEnumConstantDeclaration enumConstant : enumDeclaration.getEnumConstants()) {
             description.addRemark(enumConstant.getName());
         }

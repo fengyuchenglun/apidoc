@@ -1,0 +1,760 @@
+{
+  "info" : {
+    "name" : "测试项目",
+    "_postman_id" : "api",
+    "schema" : "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item" : [ {
+    "name" : "认证模块.",
+    "item" : [ {
+      "name" : "获取认证信息.",
+      "id" : "5427ba5e-9c0b-421f-a839-b884b9d7be4c",
+      "request" : {
+        "url" : {
+          "protocol" : "http",
+          "host" : "{{host}}",
+          "path" : "/restdoc/auth",
+          "query" : [ ]
+        },
+        "method" : "POST",
+        "headers" : [ {
+          "key" : "token",
+          "value" : "{value}"
+        } ],
+        "body" : {
+          "mode" : "urlencoded",
+          "urlencoded" : [ ],
+          "formdata" : [ ]
+        }
+      },
+      "response" : [ {
+        "name" : "success",
+        "originalRequest" : {
+          "url" : {
+            "protocol" : "http",
+            "host" : "{{host}}",
+            "path" : "/restdoc/auth",
+            "query" : [ ]
+          },
+          "method" : "POST",
+          "headers" : [ {
+            "key" : "token",
+            "value" : "{value}"
+          } ],
+          "body" : {
+            "mode" : "urlencoded",
+            "urlencoded" : [ ],
+            "formdata" : [ ]
+          }
+        },
+        "headers" : [ ],
+        "body" : "{\r\n  \"code\" : 0,\r\n  \"msg\" : \"\",\r\n  \"data\" : {\r\n    \"name\" : \"\",\r\n    \"age\" : 0,\r\n    \"createAt\" : \"\",\r\n    \"Sex\" : \"\"\r\n  }\r\n}",
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json"
+      } ]
+    } ]
+  }, {
+    "name" : "home模块.",
+    "item" : [ {
+      "name" : "hello接口.",
+      "id" : "a4cf4890-5712-4be8-b516-479fee0bcb37",
+      "request" : {
+        "url" : {
+          "protocol" : "http",
+          "host" : "{{host}}",
+          "path" : "/home",
+          "query" : [ {
+            "key" : "name",
+            "type" : "String",
+            "value" : "",
+            "description" : "名称",
+            "disabled" : false
+          } ]
+        },
+        "method" : "GET",
+        "headers" : [ ],
+        "body" : {
+          "urlencoded" : [ ],
+          "formdata" : [ ]
+        }
+      },
+      "response" : [ {
+        "name" : "success",
+        "originalRequest" : {
+          "url" : {
+            "protocol" : "http",
+            "host" : "{{host}}",
+            "path" : "/home",
+            "query" : [ {
+              "key" : "name",
+              "type" : "String",
+              "value" : "",
+              "description" : "名称",
+              "disabled" : false
+            } ]
+          },
+          "method" : "GET",
+          "headers" : [ ],
+          "body" : {
+            "urlencoded" : [ ],
+            "formdata" : [ ]
+          }
+        },
+        "headers" : [ ],
+        "body" : "{\r\n  \"id\" : 0,\r\n  \"content\" : \"\"\r\n}",
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json"
+      } ]
+    } ]
+  }, {
+    "name" : "其他.",
+    "item" : [ {
+      "name" : "Hello with ResponseBody",
+      "description" : " *********\r\n由于带有@ResponseBody，restdoc将解析该Endpoint\r\n<p>\r\nhhh\r\n\\*********\r\n *********\r\nhhhh\r\n*********\r\n<p>\r\nclass ************** {\r\n<p>\r\n}",
+      "id" : "3146a3db-2b20-483d-91f7-29de85ac03ac",
+      "request" : {
+        "url" : {
+          "protocol" : "http",
+          "host" : "{{host}}",
+          "path" : "/other/hello",
+          "query" : [ ]
+        },
+        "method" : "GET",
+        "description" : " *********\r\n由于带有@ResponseBody，restdoc将解析该Endpoint\r\n<p>\r\nhhh\r\n\\*********\r\n *********\r\nhhhh\r\n*********\r\n<p>\r\nclass ************** {\r\n<p>\r\n}",
+        "headers" : [ ],
+        "body" : {
+          "urlencoded" : [ ],
+          "formdata" : [ ]
+        }
+      },
+      "response" : [ {
+        "name" : "success",
+        "originalRequest" : {
+          "url" : {
+            "protocol" : "http",
+            "host" : "{{host}}",
+            "path" : "/other/hello",
+            "query" : [ ]
+          },
+          "method" : "GET",
+          "description" : " *********\r\n由于带有@ResponseBody，restdoc将解析该Endpoint\r\n<p>\r\nhhh\r\n\\*********\r\n *********\r\nhhhh\r\n*********\r\n<p>\r\nclass ************** {\r\n<p>\r\n}",
+          "headers" : [ ],
+          "body" : {
+            "urlencoded" : [ ],
+            "formdata" : [ ]
+          }
+        },
+        "headers" : [ ],
+        "body" : "{\r\n  \"userId\" : 0,\r\n  \"userName\" : \"\",\r\n  \"avatar\" : \"\",\r\n  \"effDate\" : \"\",\r\n  \"expDate\" : \"\",\r\n  \"mobile\" : \"\",\r\n  \"fixedPhone\" : \"\",\r\n  \"email\" : \"\",\r\n  \"userState\" : 0,\r\n  \"lockState\" : 0,\r\n  \"userRoleRelationList\" : [ 0 ]\r\n}",
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json"
+      } ]
+    }, {
+      "name" : "未知的多泛型的tuple 演示",
+      "id" : "54bd65c1-df74-4c2a-9d19-264717e42e11",
+      "request" : {
+        "url" : {
+          "protocol" : "http",
+          "host" : "{{host}}",
+          "path" : "/other/tuple",
+          "query" : [ ]
+        },
+        "method" : "GET",
+        "headers" : [ ],
+        "body" : {
+          "urlencoded" : [ ],
+          "formdata" : [ ]
+        }
+      },
+      "response" : [ {
+        "name" : "success",
+        "originalRequest" : {
+          "url" : {
+            "protocol" : "http",
+            "host" : "{{host}}",
+            "path" : "/other/tuple",
+            "query" : [ ]
+          },
+          "method" : "GET",
+          "headers" : [ ],
+          "body" : {
+            "urlencoded" : [ ],
+            "formdata" : [ ]
+          }
+        },
+        "headers" : [ ],
+        "body" : "{\r\n  \"a\" : {\r\n    \"userId\" : 0,\r\n    \"userName\" : \"\",\r\n    \"avatar\" : \"\",\r\n    \"effDate\" : \"\",\r\n    \"expDate\" : \"\",\r\n    \"mobile\" : \"\",\r\n    \"fixedPhone\" : \"\",\r\n    \"email\" : \"\",\r\n    \"userState\" : 0,\r\n    \"lockState\" : 0,\r\n    \"userRoleRelationList\" : [ 0 ]\r\n  },\r\n  \"b\" : {\r\n    \"id\" : 0,\r\n    \"name\" : \"\",\r\n    \"age\" : 0,\r\n    \"birthday\" : \"\",\r\n    \"tags\" : [ \"\" ],\r\n    \"data\" : [ ],\r\n    \"icons\" : [ \"\" ],\r\n    \"attrs\" : {\r\n      \"\" : \"\"\r\n    }\r\n  }\r\n}",
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json"
+      } ]
+    }, {
+      "name" : "多个RequestMethod",
+      "description" : "暂时只支持取第一个",
+      "id" : "58249b3f-8ac4-409c-9066-6ef48fb772e3",
+      "request" : {
+        "url" : {
+          "protocol" : "http",
+          "host" : "{{host}}",
+          "path" : "/other/multiMethod",
+          "query" : [ ]
+        },
+        "method" : "GET",
+        "description" : "暂时只支持取第一个",
+        "headers" : [ ],
+        "body" : {
+          "urlencoded" : [ ],
+          "formdata" : [ ]
+        }
+      },
+      "response" : [ {
+        "name" : "success",
+        "originalRequest" : {
+          "url" : {
+            "protocol" : "http",
+            "host" : "{{host}}",
+            "path" : "/other/multiMethod",
+            "query" : [ ]
+          },
+          "method" : "GET",
+          "description" : "暂时只支持取第一个",
+          "headers" : [ ],
+          "body" : {
+            "urlencoded" : [ ],
+            "formdata" : [ ]
+          }
+        },
+        "headers" : [ ],
+        "body" : "{\r\n  \"code\" : 0,\r\n  \"msg\" : \"\"\r\n}",
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json"
+      } ]
+    }, {
+      "name" : "多层返回结果.",
+      "id" : "48d105ec-fb6a-4ac9-89f9-39f68f054ad4",
+      "request" : {
+        "url" : {
+          "protocol" : "http",
+          "host" : "{{host}}",
+          "path" : "/other/multi",
+          "query" : [ ]
+        },
+        "method" : "POST",
+        "headers" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "body" : {
+          "mode" : "raw",
+          "raw" : "{\r\n  \"code\" : 0,\r\n  \"msg\" : \"\",\r\n  \"data\" : {\r\n    \"wrapper\" : \"\",\r\n    \"data\" : [ {\r\n      \"id\" : 0,\r\n      \"name\" : \"\",\r\n      \"age\" : 0,\r\n      \"birthday\" : \"\",\r\n      \"tags\" : [ \"\" ],\r\n      \"data\" : [ ],\r\n      \"icons\" : [ \"\" ],\r\n      \"attrs\" : {\r\n        \"\" : \"\"\r\n      }\r\n    } ]\r\n  }\r\n}",
+          "urlencoded" : [ ],
+          "formdata" : [ ]
+        }
+      },
+      "response" : [ {
+        "name" : "success",
+        "originalRequest" : {
+          "url" : {
+            "protocol" : "http",
+            "host" : "{{host}}",
+            "path" : "/other/multi",
+            "query" : [ ]
+          },
+          "method" : "POST",
+          "headers" : [ {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          } ],
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\r\n  \"code\" : 0,\r\n  \"msg\" : \"\",\r\n  \"data\" : {\r\n    \"wrapper\" : \"\",\r\n    \"data\" : [ {\r\n      \"id\" : 0,\r\n      \"name\" : \"\",\r\n      \"age\" : 0,\r\n      \"birthday\" : \"\",\r\n      \"tags\" : [ \"\" ],\r\n      \"data\" : [ ],\r\n      \"icons\" : [ \"\" ],\r\n      \"attrs\" : {\r\n        \"\" : \"\"\r\n      }\r\n    } ]\r\n  }\r\n}",
+            "urlencoded" : [ ],
+            "formdata" : [ ]
+          }
+        },
+        "headers" : [ ],
+        "body" : "{\r\n  \"code\" : 0,\r\n  \"msg\" : \"\",\r\n  \"data\" : {\r\n    \"wrapper\" : \"\",\r\n    \"data\" : {\r\n      \"id\" : 0,\r\n      \"name\" : \"\",\r\n      \"age\" : 0,\r\n      \"birthday\" : \"\",\r\n      \"tags\" : [ \"\" ],\r\n      \"data\" : [ ],\r\n      \"icons\" : [ \"\" ],\r\n      \"attrs\" : {\r\n        \"\" : \"\"\r\n      }\r\n    }\r\n  }\r\n}",
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json"
+      } ]
+    }, {
+      "name" : "引用二方Jar",
+      "description" : "使用二方Jar的类时，代码解析器无法获取类上的注释，注解\r\n只能获取属性的名称和类型",
+      "id" : "89f3c09c-57df-4f38-9dd1-b45839a462e3",
+      "request" : {
+        "url" : {
+          "protocol" : "http",
+          "host" : "{{host}}",
+          "path" : "/other/jar",
+          "query" : [ ]
+        },
+        "method" : "POST",
+        "description" : "使用二方Jar的类时，代码解析器无法获取类上的注释，注解\r\n只能获取属性的名称和类型",
+        "headers" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "body" : {
+          "mode" : "raw",
+          "raw" : "{\r\n  \"page\" : 0,\r\n  \"size\" : 0,\r\n  \"name\" : \"\"\r\n}",
+          "urlencoded" : [ ],
+          "formdata" : [ ]
+        }
+      },
+      "response" : [ {
+        "name" : "success",
+        "originalRequest" : {
+          "url" : {
+            "protocol" : "http",
+            "host" : "{{host}}",
+            "path" : "/other/jar",
+            "query" : [ ]
+          },
+          "method" : "POST",
+          "description" : "使用二方Jar的类时，代码解析器无法获取类上的注释，注解\r\n只能获取属性的名称和类型",
+          "headers" : [ {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          } ],
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\r\n  \"page\" : 0,\r\n  \"size\" : 0,\r\n  \"name\" : \"\"\r\n}",
+            "urlencoded" : [ ],
+            "formdata" : [ ]
+          }
+        },
+        "headers" : [ ],
+        "body" : "{\r\n  \"id\" : 0,\r\n  \"name\" : \"\",\r\n  \"man\" : \"\"\r\n}",
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json"
+      } ]
+    }, {
+      "name" : "一个复杂的类型 List<Map<String,User>>",
+      "id" : "ccaf9f63-a1e4-4cf9-b87e-2c4937868835",
+      "request" : {
+        "url" : {
+          "protocol" : "http",
+          "host" : "{{host}}",
+          "path" : "/other/map",
+          "query" : [ ]
+        },
+        "method" : "GET",
+        "headers" : [ ],
+        "body" : {
+          "urlencoded" : [ ],
+          "formdata" : [ ]
+        }
+      },
+      "response" : [ {
+        "name" : "success",
+        "originalRequest" : {
+          "url" : {
+            "protocol" : "http",
+            "host" : "{{host}}",
+            "path" : "/other/map",
+            "query" : [ ]
+          },
+          "method" : "GET",
+          "headers" : [ ],
+          "body" : {
+            "urlencoded" : [ ],
+            "formdata" : [ ]
+          }
+        },
+        "headers" : [ ],
+        "body" : "[ {\r\n  \"\" : {\r\n    \"userId\" : 0,\r\n    \"userName\" : \"\",\r\n    \"avatar\" : \"\",\r\n    \"effDate\" : \"\",\r\n    \"expDate\" : \"\",\r\n    \"mobile\" : \"\",\r\n    \"fixedPhone\" : \"\",\r\n    \"email\" : \"\",\r\n    \"userState\" : 0,\r\n    \"lockState\" : 0,\r\n    \"userRoleRelationList\" : [ 0 ]\r\n  }\r\n} ]",
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json"
+      } ]
+    }, {
+      "name" : "一个更复杂的类型 List<Map<String,ResultData<Map<Integer,User>>>>",
+      "id" : "fca30616-4141-4140-a88f-42b5189805d3",
+      "request" : {
+        "url" : {
+          "protocol" : "http",
+          "host" : "{{host}}",
+          "path" : "/other/map",
+          "query" : [ ]
+        },
+        "method" : "GET",
+        "headers" : [ ],
+        "body" : {
+          "urlencoded" : [ ],
+          "formdata" : [ ]
+        }
+      },
+      "response" : [ {
+        "name" : "success",
+        "originalRequest" : {
+          "url" : {
+            "protocol" : "http",
+            "host" : "{{host}}",
+            "path" : "/other/map",
+            "query" : [ ]
+          },
+          "method" : "GET",
+          "headers" : [ ],
+          "body" : {
+            "urlencoded" : [ ],
+            "formdata" : [ ]
+          }
+        },
+        "headers" : [ ],
+        "body" : "[ {\r\n  \"\" : {\r\n    \"code\" : 0,\r\n    \"msg\" : \"\",\r\n    \"data\" : {\r\n      \"\" : {\r\n        \"name\" : \"\",\r\n        \"age\" : 0,\r\n        \"createAt\" : \"\",\r\n        \"Sex\" : \"\"\r\n      }\r\n    }\r\n  }\r\n} ]",
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json"
+      } ]
+    }, {
+      "name" : "一个问号类型 List<Map<String,List<?>>>",
+      "id" : "a000087e-6b81-4785-ad14-85f42dcc83c4",
+      "request" : {
+        "url" : {
+          "protocol" : "http",
+          "host" : "{{host}}",
+          "path" : "/other/map",
+          "query" : [ ]
+        },
+        "method" : "GET",
+        "headers" : [ ],
+        "body" : {
+          "urlencoded" : [ ],
+          "formdata" : [ ]
+        }
+      },
+      "response" : [ {
+        "name" : "success",
+        "originalRequest" : {
+          "url" : {
+            "protocol" : "http",
+            "host" : "{{host}}",
+            "path" : "/other/map",
+            "query" : [ ]
+          },
+          "method" : "GET",
+          "headers" : [ ],
+          "body" : {
+            "urlencoded" : [ ],
+            "formdata" : [ ]
+          }
+        },
+        "headers" : [ ],
+        "body" : "[ {\r\n  \"\" : [ ]\r\n} ]",
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json"
+      } ]
+    } ]
+  }, {
+    "name" : "UserController",
+    "item" : [ {
+      "name" : "删除用户.",
+      "id" : "46385fac-4cb6-4c31-bc59-4b989020bf57",
+      "request" : {
+        "url" : {
+          "protocol" : "http",
+          "host" : "{{host}}",
+          "path" : "/api/v1/users/:userId",
+          "query" : [ ]
+        },
+        "method" : "DELETE",
+        "headers" : [ ],
+        "body" : {
+          "mode" : "urlencoded",
+          "urlencoded" : [ ],
+          "formdata" : [ ]
+        }
+      },
+      "response" : [ {
+        "name" : "success",
+        "originalRequest" : {
+          "url" : {
+            "protocol" : "http",
+            "host" : "{{host}}",
+            "path" : "/api/v1/users/:userId",
+            "query" : [ ]
+          },
+          "method" : "DELETE",
+          "headers" : [ ],
+          "body" : {
+            "mode" : "urlencoded",
+            "urlencoded" : [ ],
+            "formdata" : [ ]
+          }
+        },
+        "headers" : [ ],
+        "body" : "false",
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json"
+      } ]
+    }, {
+      "name" : "修改用户对象.",
+      "id" : "dec7539f-b54f-4826-918b-91bc1b30f8eb",
+      "request" : {
+        "url" : {
+          "protocol" : "http",
+          "host" : "{{host}}",
+          "path" : "/api/v1/users",
+          "query" : [ ]
+        },
+        "method" : "PUT",
+        "headers" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "body" : {
+          "mode" : "raw",
+          "raw" : "{\r\n  \"userId\" : 0,\r\n  \"userName\" : \"\",\r\n  \"avatar\" : \"\",\r\n  \"effDate\" : \"\",\r\n  \"expDate\" : \"\",\r\n  \"mobile\" : \"\",\r\n  \"fixedPhone\" : \"\",\r\n  \"email\" : \"\",\r\n  \"userState\" : 0,\r\n  \"lockState\" : 0,\r\n  \"userRoleRelationList\" : [ 0 ]\r\n}",
+          "urlencoded" : [ ],
+          "formdata" : [ ]
+        }
+      },
+      "response" : [ {
+        "name" : "success",
+        "originalRequest" : {
+          "url" : {
+            "protocol" : "http",
+            "host" : "{{host}}",
+            "path" : "/api/v1/users",
+            "query" : [ ]
+          },
+          "method" : "PUT",
+          "headers" : [ {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          } ],
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\r\n  \"userId\" : 0,\r\n  \"userName\" : \"\",\r\n  \"avatar\" : \"\",\r\n  \"effDate\" : \"\",\r\n  \"expDate\" : \"\",\r\n  \"mobile\" : \"\",\r\n  \"fixedPhone\" : \"\",\r\n  \"email\" : \"\",\r\n  \"userState\" : 0,\r\n  \"lockState\" : 0,\r\n  \"userRoleRelationList\" : [ 0 ]\r\n}",
+            "urlencoded" : [ ],
+            "formdata" : [ ]
+          }
+        },
+        "headers" : [ ],
+        "body" : "false",
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json"
+      } ]
+    }, {
+      "name" : "添加用户.",
+      "id" : "94b14b35-df79-4f9e-b842-6c10bc1e84c2",
+      "request" : {
+        "url" : {
+          "protocol" : "http",
+          "host" : "{{host}}",
+          "path" : "/api/v1/users",
+          "query" : [ ]
+        },
+        "method" : "POST",
+        "headers" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "body" : {
+          "mode" : "raw",
+          "raw" : "{\r\n  \"userId\" : 0,\r\n  \"userName\" : \"\",\r\n  \"avatar\" : \"\",\r\n  \"effDate\" : \"\",\r\n  \"expDate\" : \"\",\r\n  \"mobile\" : \"\",\r\n  \"fixedPhone\" : \"\",\r\n  \"email\" : \"\",\r\n  \"userState\" : 0,\r\n  \"lockState\" : 0,\r\n  \"userRoleRelationList\" : [ 0 ]\r\n}",
+          "urlencoded" : [ ],
+          "formdata" : [ ]
+        }
+      },
+      "response" : [ {
+        "name" : "success",
+        "originalRequest" : {
+          "url" : {
+            "protocol" : "http",
+            "host" : "{{host}}",
+            "path" : "/api/v1/users",
+            "query" : [ ]
+          },
+          "method" : "POST",
+          "headers" : [ {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          } ],
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\r\n  \"userId\" : 0,\r\n  \"userName\" : \"\",\r\n  \"avatar\" : \"\",\r\n  \"effDate\" : \"\",\r\n  \"expDate\" : \"\",\r\n  \"mobile\" : \"\",\r\n  \"fixedPhone\" : \"\",\r\n  \"email\" : \"\",\r\n  \"userState\" : 0,\r\n  \"lockState\" : 0,\r\n  \"userRoleRelationList\" : [ 0 ]\r\n}",
+            "urlencoded" : [ ],
+            "formdata" : [ ]
+          }
+        },
+        "headers" : [ ],
+        "body" : "0",
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json"
+      } ]
+    }, {
+      "name" : "查看用户详情",
+      "id" : "efd6cfcb-44db-4287-a272-f2a17c549324",
+      "request" : {
+        "url" : {
+          "protocol" : "http",
+          "host" : "{{host}}",
+          "path" : "/api/v1/users/:userId",
+          "query" : [ ]
+        },
+        "method" : "GET",
+        "headers" : [ ],
+        "body" : {
+          "urlencoded" : [ ],
+          "formdata" : [ ]
+        }
+      },
+      "response" : [ {
+        "name" : "success",
+        "originalRequest" : {
+          "url" : {
+            "protocol" : "http",
+            "host" : "{{host}}",
+            "path" : "/api/v1/users/:userId",
+            "query" : [ ]
+          },
+          "method" : "GET",
+          "headers" : [ ],
+          "body" : {
+            "urlencoded" : [ ],
+            "formdata" : [ ]
+          }
+        },
+        "headers" : [ ],
+        "body" : "{\r\n  \"userId\" : 0,\r\n  \"userName\" : \"\",\r\n  \"avatar\" : \"\",\r\n  \"effDate\" : \"\",\r\n  \"expDate\" : \"\",\r\n  \"mobile\" : \"\",\r\n  \"fixedPhone\" : \"\",\r\n  \"email\" : \"\",\r\n  \"userState\" : 0,\r\n  \"lockState\" : 0,\r\n  \"userRoleRelationList\" : [ 0 ]\r\n}",
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json"
+      } ]
+    }, {
+      "name" : "获取用户列表-分页.",
+      "id" : "bcbfc04f-e474-48fd-86ef-a82200455cce",
+      "request" : {
+        "url" : {
+          "protocol" : "http",
+          "host" : "{{host}}",
+          "path" : "/api/v1/users",
+          "query" : [ {
+            "key" : "pageNum",
+            "type" : "long",
+            "value" : "1L",
+            "description" : "分页页码.",
+            "disabled" : false
+          }, {
+            "key" : "pageSize",
+            "type" : "long",
+            "value" : "10L",
+            "description" : "分页大小.",
+            "disabled" : false
+          }, {
+            "key" : "sortField",
+            "type" : "String",
+            "value" : "",
+            "description" : "排序字段",
+            "disabled" : false
+          }, {
+            "key" : "sortOrder",
+            "type" : "String",
+            "value" : "",
+            "description" : "排序顺序\r\ndescend-降序\r\nascend-升序\r\nnull-不排序",
+            "disabled" : false
+          }, {
+            "key" : "userName",
+            "type" : "String",
+            "value" : "",
+            "description" : "用户名.",
+            "disabled" : false
+          }, {
+            "key" : "userState",
+            "type" : "int",
+            "value" : "0",
+            "description" : "用户状态.",
+            "disabled" : false
+          }, {
+            "key" : "lockState",
+            "type" : "int",
+            "value" : "0",
+            "description" : "锁定状态.",
+            "disabled" : false
+          } ]
+        },
+        "method" : "GET",
+        "headers" : [ ],
+        "body" : {
+          "urlencoded" : [ ],
+          "formdata" : [ ]
+        }
+      },
+      "response" : [ {
+        "name" : "success",
+        "originalRequest" : {
+          "url" : {
+            "protocol" : "http",
+            "host" : "{{host}}",
+            "path" : "/api/v1/users",
+            "query" : [ {
+              "key" : "pageNum",
+              "type" : "long",
+              "value" : "1L",
+              "description" : "分页页码.",
+              "disabled" : false
+            }, {
+              "key" : "pageSize",
+              "type" : "long",
+              "value" : "10L",
+              "description" : "分页大小.",
+              "disabled" : false
+            }, {
+              "key" : "sortField",
+              "type" : "String",
+              "value" : "",
+              "description" : "排序字段",
+              "disabled" : false
+            }, {
+              "key" : "sortOrder",
+              "type" : "String",
+              "value" : "",
+              "description" : "排序顺序\r\ndescend-降序\r\nascend-升序\r\nnull-不排序",
+              "disabled" : false
+            }, {
+              "key" : "userName",
+              "type" : "String",
+              "value" : "",
+              "description" : "用户名.",
+              "disabled" : false
+            }, {
+              "key" : "userState",
+              "type" : "int",
+              "value" : "0",
+              "description" : "用户状态.",
+              "disabled" : false
+            }, {
+              "key" : "lockState",
+              "type" : "int",
+              "value" : "0",
+              "description" : "锁定状态.",
+              "disabled" : false
+            } ]
+          },
+          "method" : "GET",
+          "headers" : [ ],
+          "body" : {
+            "urlencoded" : [ ],
+            "formdata" : [ ]
+          }
+        },
+        "headers" : [ ],
+        "body" : "{ }",
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json"
+      } ]
+    } ]
+  } ]
+}

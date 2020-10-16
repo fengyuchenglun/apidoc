@@ -15,7 +15,7 @@ import java.util.TreeSet;
  * @version 1.0.0
  */
 @Data
-@EqualsAndHashCode(callSuper=true)
+@EqualsAndHashCode(callSuper = true)
 public class Book extends Node {
 
     /**
@@ -31,9 +31,11 @@ public class Book extends Node {
     /**
      * Instantiates a new Book.
      *
-     * @param id the id
+     * @param id   the id
+     * @param name the name
      */
-    public Book(String id) {
+    public Book(String id, String name) {
         this.id = id;
+        this.name = DEFAULT.equalsIgnoreCase(name) ? null : name;
     }
 }

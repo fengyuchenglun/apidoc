@@ -12,14 +12,16 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * The type Request mapping helper.
  *
- * @author fengyuchenglun
+ * @author duanledexianxianxian
  * @version 1.0.0
  */
 public class RequestMappingHelper {
@@ -58,7 +60,7 @@ public class RequestMappingHelper {
     /**
      * The constant ANNOTATION_REQUEST_MAPPINGS.
      */
-    public static final List<String> ANNOTATION_REQUEST_MAPPINGS = Lists.newArrayList(
+    public static final Set<String> ANNOTATION_REQUEST_MAPPINGS = Sets.newHashSet(
             ANNOTATION_GET_MAPPING,
             ANNOTATION_POST_MAPPING,
             ANNOTATION_PUT_MAPPING,
@@ -80,9 +82,7 @@ public class RequestMappingHelper {
         if (parentOptional.isPresent()) {
             Node parentNode = parentOptional.get();
             if (parentNode instanceof ClassOrInterfaceDeclaration) {
-                if (AnnotationHelper.isAnnotationPresent(((ClassOrInterfaceDeclaration) parentNode), SpringMVCContext.getInstance().getRestControllers())) {
-                    return true;
-                }
+                return AnnotationHelper.isAnnotationPresent(((ClassOrInterfaceDeclaration) parentNode), SpringMvcContext.getInstance().getRestControllers());
             }
         }
         return false;
@@ -133,7 +133,7 @@ public class RequestMappingHelper {
      * 获取uri数据
      *
      * @param n the n
-     * @return uri
+     * @return uri uri
      */
     public static URI pickUriToParent(ClassOrInterfaceDeclaration n) {
         URI parentUri = null;
@@ -153,7 +153,7 @@ public class RequestMappingHelper {
      * 获取uri数据，有多个时，暂时只取第一个
      *
      * @param nodeList the node list
-     * @return string
+     * @return string string
      */
     public static String pickUri(NodeList<AnnotationExpr> nodeList) {
         for (AnnotationExpr annotationExpr : nodeList) {
@@ -172,7 +172,7 @@ public class RequestMappingHelper {
      * 获取headers
      *
      * @param nodeList the node list
-     * @return list
+     * @return list list
      */
     public static List<String> pickHeaders(NodeList<AnnotationExpr> nodeList) {
         for (AnnotationExpr annotationExpr : nodeList) {
@@ -191,7 +191,7 @@ public class RequestMappingHelper {
      * 获取headers
      *
      * @param nodeList the node list
-     * @return list
+     * @return list list
      */
     public static List<String> pickConsumers(NodeList<AnnotationExpr> nodeList) {
         for (AnnotationExpr annotationExpr : nodeList) {
@@ -210,7 +210,7 @@ public class RequestMappingHelper {
      * 获取headers
      *
      * @param nodeList the node list
-     * @return list
+     * @return list list
      */
     public static List<String> pickProduces(NodeList<AnnotationExpr> nodeList) {
         for (AnnotationExpr annotationExpr : nodeList) {

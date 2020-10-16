@@ -1,5 +1,6 @@
 package com.github.fengyuchenglun.apidoc.springmvc;
 
+import com.github.fengyuchenglun.apidoc.core.Context;
 import com.github.fengyuchenglun.apidoc.core.common.description.ArrayTypeDescription;
 import com.github.fengyuchenglun.apidoc.core.common.helper.AnnotationHelper;
 import com.github.fengyuchenglun.apidoc.core.common.helper.ClassDeclarationHelper;
@@ -21,16 +22,20 @@ import com.github.fengyuchenglun.apidoc.core.schema.Header;
 import com.github.fengyuchenglun.apidoc.core.schema.Row;
 import com.github.fengyuchenglun.apidoc.core.schema.Section;
 import com.github.fengyuchenglun.apidoc.springmvc.resovler.SpringComponentTypeResolver;
+import com.github.javaparser.ast.type.Type;
+import org.apache.commons.collections4.CollectionUtils;
+
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.github.fengyuchenglun.apidoc.core.common.Constants.TAG_JAVA_DOC_RETURN;
 import static com.github.fengyuchenglun.apidoc.core.schema.ParameterType.*;
 
 
 /**
- * spring 解析
+ * spring解析
  *
  * @author fengyuchenglun
  * @version 1.0.0
@@ -56,10 +61,14 @@ public class SpringParser implements ParserStrategy {
 
     @Override
     public void onLoad() {
+        Context context = ApiDoc.getInstance().getContext();
         // 添加类型解析器
         ApiDoc.getInstance().getTypeResolvers().addResolver(new SpringComponentTypeResolver());
         // 类型名称解析器
         ApiDoc.getInstance().getTypeResolvers().addNameResolver(new SpringComponentTypeResolver());
+        SpringMvcContext.getInstance().addRestControllers(context.getRestControllers());
+        SpringMvcContext.getInstance().addControllers(context.getControllers());
+
     }
 
     /**
@@ -69,7 +78,36 @@ public class SpringParser implements ParserStrategy {
      */
     @Override
     public boolean accept(ClassOrInterfaceDeclaration classOrInterfaceDeclaration) {
-        return AnnotationHelper.isAnnotationPresent(classOrInterfaceDeclaration, SpringMVCContext.getInstance().getControllers());
+        return acceptController(classOrInterfaceDeclaration) && AnnotationHelper.isAnnotationPresent(classOrInterfaceDeclaration, SpringMvcContext.getInstance().getControllers());
+    }
+
+    /**
+     * class or interface is empty.
+     *
+     * @param classOrInterfaceDeclaration
+     * @return
+     */
+    private Boolean acceptController(ClassOrInterfaceDeclaration classOrInterfaceDeclaration) {
+        Boolean isEmpty = classOrInterfaceDeclaration.getMembers().size() == 0;
+        if (isEmpty) {
+            return false;
+        }
+        Set<String> includes = ApiDoc.getInstance().getContext().getIncludes();
+        Set<String> excludes = ApiDoc.getInstance().getContext().getExcludes();
+        if (CollectionUtils.isEmpty(excludes) && CollectionUtils.isEmpty(includes)) {
+            return true;
+        }
+        Optional<String> opt = classOrInterfaceDeclaration.getFullyQualifiedName();
+        if (opt.isPresent()) {
+            if (CollectionUtils.isNotEmpty(excludes) && excludes.contains(opt.get())) {
+                return false;
+            }
+            if (CollectionUtils.isNotEmpty(includes) && includes.contains(opt.get())) {
+                return true;
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -86,9 +124,6 @@ public class SpringParser implements ParserStrategy {
 
     /**
      * 解析类定义
-     *
-     * @param n
-     * @param chapter
      */
     @Override
     public void visit(ClassOrInterfaceDeclaration n, Chapter chapter) {
@@ -322,12 +357,26 @@ public class SpringParser implements ParserStrategy {
      * @param section the section
      */
     private void visitReturn(MethodDeclaration n, Chapter chapter, Section section) {
-        ClassOrInterfaceDeclaration resultDataClassOrInterfaceDeclaration = ApiDoc.getInstance().getResultDataClassOrInterfaceDeclaration();
-        if (null != resultDataClassOrInterfaceDeclaration) {
+        // 分页
+        ClassOrInterfaceDeclaration resultType = ApiDoc.getInstance().getResultDataClassOrInterfaceDeclaration();
+        // 分页返回
+        Boolean isPageResult = isPageResult(n.getType());
+        if (isPageResult) {
+            resultType = ApiDoc.getInstance().getPageResultDataClassOrInterfaceDeclaration();
+        }
+        // no common result
+        if (null != resultType) {
             ClassOrInterfaceType returnType = new ClassOrInterfaceType();
-            returnType.setName(resultDataClassOrInterfaceDeclaration.getName());
+            returnType.setName(resultType.getName());
             returnType.setTypeArguments(n.getType());
-            n.findCompilationUnit().get().addImport(ClassDeclarationHelper.getClassOrInterfacePackageName(resultDataClassOrInterfaceDeclaration));
+            if (isPageResult
+                    && n.getType().isClassOrInterfaceType()
+                    && n.getType().asClassOrInterfaceType().getTypeArguments().isPresent()) {
+                returnType.setTypeArguments(n.getType().asClassOrInterfaceType().getTypeArguments().get());
+            } else {
+                returnType.setTypeArguments(n.getType());
+            }
+            n.findCompilationUnit().get().addImport(ClassDeclarationHelper.getClassOrInterfacePackageName(resultType));
             n.setType(returnType);
             section.setIsResultData(true);
         }
@@ -335,14 +384,14 @@ public class SpringParser implements ParserStrategy {
         if (description.isAvailable()) {
             if (description.isPrimitive()) {
                 section.setRawResponse(description.getValue());
-                handleResultData(section,description);
+                handleResultData(section, description);
             } else if (description.isString()) {
                 section.setRawResponse(description.getValue());
-                handleResultData(section,description);
+                handleResultData(section, description);
             } else if (description.isArray()) {
                 ArrayTypeDescription asArray = description.asArray();
                 if (asArray.getComponent().isPrimitive() || asArray.getComponent().isString()) {
-                    handleResultData(section,description);
+                    handleResultData(section, description);
                 }
                 section.setResponse(description.asArray().getValue());
             } else if (description.isObject()) {
@@ -353,11 +402,26 @@ public class SpringParser implements ParserStrategy {
         }
     }
 
+    /**
+     * 判断返回结果是否为统一分页结果
+     *
+     * @param type
+     * @return
+     */
+    private Boolean isPageResult(Type type) {
+        String resultName = type.asString();
+        Set<String> pageClassNames = ApiDoc.getInstance().getContext().getPageClassNames();
+        Optional<String> pageOpt = pageClassNames.stream().filter(resultName::matches).findFirst();
+        if (pageOpt.isPresent()) {
+            return true;
+        }
+        return false;
+    }
+
     private void handleResultData(Section section, TypeDescription description) {
         if (!section.getIsResultData()) {
             description.setKey("result");
             section.getTag(TAG_JAVA_DOC_RETURN).ifPresent(x -> description.setRemark(x.getContent()));
-
         }
     }
 

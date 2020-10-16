@@ -1,13 +1,19 @@
 package com.github.fengyuchenglun.apidoc.core.parser;
 
+import com.github.fengyuchenglun.apidoc.core.common.helper.CommentHelper;
 import com.github.fengyuchenglun.apidoc.core.schema.*;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.comments.Comment;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.fengyuchenglun.apidoc.core.ApiDoc;
 import com.github.fengyuchenglun.apidoc.core.common.helper.OptionalHelper;
+
+import java.util.Optional;
+
+import static com.github.fengyuchenglun.apidoc.core.common.Constants.*;
 
 
 /**
@@ -33,12 +39,11 @@ public class VisitorParser extends VoidVisitorAdapter<Node> {
     }
 
 
-
     /**
      * 类或者接口声明
      *
      * @param classOrInterfaceDeclaration 类或者接口
-     * @param arg  参数
+     * @param arg                         参数
      */
     @Override
     public void visit(final ClassOrInterfaceDeclaration classOrInterfaceDeclaration, final Node arg) {
@@ -50,21 +55,23 @@ public class VisitorParser extends VoidVisitorAdapter<Node> {
             chapter.setName(classOrInterfaceDeclaration.getNameAsString());
             classOrInterfaceDeclaration.getComment().ifPresent(chapter::accept);
 
-            OptionalHelper.any(chapter.getTag("book"), chapter.getTag("group"))
-                    .ifPresent(tag -> chapter.setBookName(tag.getContent()));
+
+            OptionalHelper.any(chapter.getTag(TAG_CUSTOM_JAVA_DOC_BOOK), chapter.getTag(TAG_CUSTOM_JAVA_DOC_GROUP))
+                     .ifPresent(tag -> chapter.setBookName(tag.getContent()));
 
             if (parserStrategy.accept(classOrInterfaceDeclaration)) {
                 parserStrategy.visit(classOrInterfaceDeclaration, chapter);
                 project.addChapter(chapter);
+                super.visit(classOrInterfaceDeclaration, chapter);
             }
-            super.visit(classOrInterfaceDeclaration, chapter);
         }
     }
 
     /**
      * 枚举
+     *
      * @param enumDeclaration 枚举
-     * @param arg 参数
+     * @param arg             参数
      */
     @Override
     public void visit(final EnumDeclaration enumDeclaration, final Node arg) {
@@ -80,7 +87,9 @@ public class VisitorParser extends VoidVisitorAdapter<Node> {
 //                    .ifPresent(tag -> chapter.setBookName(tag.getContent()));
 //            project.addChapter(chapter);
             //放入附录
-            if (enumDeclaration.getJavadocComment().isPresent()) {
+            if (enumDeclaration.getJavadocComment().isPresent()
+                    && scanCode(enumDeclaration.getComment())
+            ) {
                 Appendix appendix = Appendix.parse(enumDeclaration.getJavadocComment().get());
                 ApiDoc.getInstance().getProject().getAppendices().add(appendix);
             }
@@ -88,37 +97,49 @@ public class VisitorParser extends VoidVisitorAdapter<Node> {
         }
     }
 
+    private Boolean scanCode(Optional<Comment> commentOptional) {
+        return ApiDoc.getInstance().getContext().getScanCode() && CommentHelper.isCommentTagPresent(commentOptional, TAG_JAVA_DOC_CODE);
+    }
+
 
     /**
      * 注释
+     *
      * @param javadocComment 注释
-     * @param arg 参数
+     * @param arg            参数
      */
     @Override
     public void visit(JavadocComment javadocComment, Node arg) {
         if (arg instanceof Chapter) {
             Chapter chapter = (Chapter) arg;
-            OptionalHelper.any(chapter.getTag("code"))
+            OptionalHelper.any(chapter.getTag(TAG_JAVA_DOC_CODE))
                     .ifPresent(tag -> {
                         if (javadocComment.getCommentedNode().isPresent()) {
                             com.github.javaparser.ast.Node commentedNode = javadocComment.getCommentedNode().get();
                             // 常量类||枚举类
-                            if (commentedNode instanceof ClassOrInterfaceDeclaration
-                                    || commentedNode instanceof EnumDeclaration) {
+                            if ((commentedNode instanceof ClassOrInterfaceDeclaration
+                                    || commentedNode instanceof EnumDeclaration)
+                                    && scanCode(javadocComment.getComment())
+                            ) {
                                 Appendix appendix = Appendix.parse(javadocComment);
                                 ApiDoc.getInstance().getProject().getAppendices().add(appendix);
                             }
                         }
                     });
 
-            OptionalHelper.any(chapter.getTag("resultData"))
+            OptionalHelper.any(chapter.getTag(TAG_JAVA_DOC_RESULT_DATA), chapter.getTag(TAG_JAVA_DOC_PAGE_RESULT_DATA))
                     .ifPresent(tag -> {
                         if (javadocComment.getCommentedNode().isPresent()) {
                             com.github.javaparser.ast.Node commentedNode = javadocComment.getCommentedNode().get();
                             // 常量类||枚举类
                             if (commentedNode instanceof ClassOrInterfaceDeclaration) {
                                 ClassOrInterfaceDeclaration classOrInterfaceDeclaration = (ClassOrInterfaceDeclaration) commentedNode;
-                                ApiDoc.getInstance().setResultDataClassOrInterfaceDeclaration(classOrInterfaceDeclaration);
+                                if (TAG_JAVA_DOC_RESULT_DATA.equalsIgnoreCase(tag.getId())) {
+                                    ApiDoc.getInstance().setResultDataClassOrInterfaceDeclaration(classOrInterfaceDeclaration);
+                                }
+                                if (TAG_JAVA_DOC_PAGE_RESULT_DATA.equalsIgnoreCase(tag.getId())) {
+                                    ApiDoc.getInstance().setPageResultDataClassOrInterfaceDeclaration(classOrInterfaceDeclaration);
+                                }
                             }
                         }
                     });
@@ -130,7 +151,7 @@ public class VisitorParser extends VoidVisitorAdapter<Node> {
      * 方法声明
      *
      * @param methodDeclaration 方法
-     * @param arg 参数
+     * @param arg               参数
      */
     @Override
     public void visit(final MethodDeclaration methodDeclaration, final Node arg) {

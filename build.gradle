@@ -1,14 +1,26 @@
-allprojects {
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.9.2'
+    }
+}
 
+
+allprojects {
+    apply from: this.file("./common.gradle")
     apply plugin: 'java'
+//    // must be applied after your artifact generating plugin (eg. java / com.android.library)
+
     apply plugin: 'maven'
-    apply plugin: 'com.novoda.bintray-release'
 
     group 'com.github.fengyuchenglun'
-    version '1.0.0'
+    version '1.0.11'
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = this.ext.javaConfig.sourceCompatibility
+    targetCompatibility = this.ext.javaConfig.targetCompatibility
 
     [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
@@ -29,75 +41,152 @@ allprojects {
 
     ext {
         DESCRIPTION = 'A rest document generator with parse the source code.'
-        SITE_URL = 'http://platform.kuopu.net:9999/gitlab/duanledexianxianxian/apidoc'
-        GIT_URL = 'http://platform.kuopu.net:9999/gitlab/duanledexianxianxian/apidoc.git'
+        SITE_URL = 'https://github.com/fengyuchenglun/apidoc.git'
+        GIT_URL = 'https://github.com/fengyuchenglun/apidoc'
 
         LICENSE = 'MIT License'
 
-        DEVELOPER_ID = 'ayz6uem'
-        DEVELOPER_NAME = 'ayz6uem'
-        DEVELOPER_EMAIL = '360188606@qq.com'
+        DEVELOPER_ID = 'duanledexianxianxian'
+        DEVELOPER_NAME = 'duanledexianxianxian'
+        DEVELOPER_EMAIL = 'fengyuchenglun@foxmail.com'
 
         IS_UPLOADING = project.getGradle().startParameter.taskNames.any { it.contains('bintrayUpload') }
+
+        BINTRAYUSER = "duanledexianxianxian"
+        BINTRAYKEY = "072b76666cdb3f1eea57f8d083a6b7211d9e2303"
     }
 
+//    println project.group
+//    println project.name
+//    println project.version
+
+
+
+}
+
+
+
+subprojects {
+    apply plugin: 'com.novoda.bintray-release'
+
+
     publish {
-        userOrg = 'apidoc'
+        userOrg = "forever"
         groupId = group
         artifactId = name
         publishVersion = version
-        desc = project.DESCRIPTION
-        website = project.SITE_URL
-//    bintrayUser = project.BINTRAYUSER
-//    bintrayKey = project.BINTRAYKEY
+        desc = DESCRIPTION
+        website = SITE_URL
+        bintrayUser = BINTRAYUSER
+        bintrayKey = BINTRAYKEY
         dryRun = false
     }
+
+    gradle.taskGraph.whenReady { taskGraph ->
+        taskGraph.getAllTasks().find {
+            it.path == ":$project.name:generatePomFileForMavenPublication"
+        }?.doLast {
+            file("build/publications/maven/pom-default.xml").delete()
+            println 'Overriding pom-file to make sure we can sync to maven!'
+            pom {
+                //noinspection GroovyAssignabilityCheck
+                project {
+                    name "$project.name"
+                    artifactId name
+                    packaging 'jar'
+                    description DESCRIPTION
+                    url SITE_URL
+                    version version
+
+                    scm {
+                        url GIT_URL
+                        connection GIT_URL
+                        developerConnection GIT_URL
+                    }
+
+                    licenses {
+                        license {
+                            name LICENSE
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id DEVELOPER_ID
+                            name DEVELOPER_NAME
+                            email DEVELOPER_EMAIL
+                        }
+                    }
+                }
+            }.writeTo("build/publications/maven/pom-default.xml")
+        }
+    }
 }
 
-buildscript {
-    repositories {
-        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
-    }
-    dependencies {
-        classpath 'com.novoda:bintray-release:0.8.1'
-    }
-}
 
+//subprojects {
 //
-//gradle.taskGraph.whenReady { taskGraph ->
-//    taskGraph.getAllTasks().find { it.path == ":generatePomFileForMavenPublication" }?.doLast {
-//        file("build/publications/maven/pom-default.xml").delete()
-//        println 'Overriding pom-file to make sure we can sync to maven!'
-//        pom {
-//            //noinspection GroovyAssignabilityCheck
-//            project {
-//                name "$project.name"
-//                artifactId name
-//                packaging 'jar'
-//                description DESCRIPTION
-//                url SITE_URL
-//                version version
+//    apply plugin: 'com.novoda.bintray-release' // must be applied after your artifact generating plugin (eg. java / com.android.library)
 //
-//                scm {
-//                    url GIT_URL
-//                    connection GIT_URL
-//                    developerConnection GIT_URL
-//                }
+//    group = "com.github.fengyuchenglun"
+//    version = "1.0.2"
 //
-//                licenses {
-//                    license {
-//                        name LICENSE
+//
+//
+//    publish {
+//        userOrg = "forever"
+//        groupId = "com.github.fengyuchenglun"
+//        artifactId = "apidoc-core"
+//        publishVersion = "1.0.2"
+//        desc = ""
+//        website = ""
+//        bintrayUser = "duanledexianxianxian"
+//        bintrayKey = "072b76666cdb3f1eea57f8d083a6b7211d9e2303"
+//        dryRun = false
+//    }
+//
+//    if (IS_UPLOADING) {
+//        println project.name
+//        apply plugin: 'maven'
+//
+//        gradle.taskGraph.whenReady { taskGraph ->
+//            taskGraph.getAllTasks().find {
+//                it.path == ":$project.name:generatePomFileForMavenPublication"
+//            }.doLast {
+//                file("build/publications/maven/pom-default.xml").delete()
+//                println 'Overriding pom-file to make sure we can sync to maven central!'
+//                pom {
+//                    //noinspection GroovyAssignabilityCheck
+//                    project {
+//                        name "apidoc-core"
+//                        artifactId "apidoc-core"
+//                        packaging 'jar'
+//                        description ""
+//                        url ""
+//                        version "1.0.2"
+//
+//                        scm {
+//                            url ""
+//                            connection ""
+//                            developerConnection ""
+//                        }
+//
+//                        licenses {
+//                            license {
+//                                name ""
+//                            }
+//                        }
+//
+//                        developers {
+//                            developer {
+//                                id ""
+//                                name ""
+//                                email ""
+//                            }
+//                        }
 //                    }
-//                }
-//
-//                developers {
-//                    developer {
-//                        id DEVELOPER_ID
-//                        name DEVELOPER_NAME
-//                        email DEVELOPER_EMAIL
-//                    }
-//                }
+//                }.writeTo("build/publications/maven/pom-default.xml")
 //            }
-//        }.writeTo("build/publications/maven/pom-default.xml")
+//        }
 //    }
 //}

@@ -12,9 +12,15 @@ import java.nio.file.Path;
 
 /**
  * Postman v2.1 json文件构建
+ *
+ * @author duanledexianxianxian
  */
 @Slf4j
 public class PostmanRender implements ProjectRender {
+    @Override
+    public String template() {
+        return "postman.ftl";
+    }
 
     @Override
     public void render(Project project) {

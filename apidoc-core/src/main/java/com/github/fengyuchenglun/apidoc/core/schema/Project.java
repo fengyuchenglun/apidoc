@@ -32,6 +32,12 @@ public class Project extends Node {
     List<Appendix> appendices = new LinkedList<>();
 
     /**
+     * 当前book.
+     */
+    String currentBook;
+
+
+    /**
      * 添加章节.
      *
      * @param chapter the chapter
@@ -40,9 +46,10 @@ public class Project extends Node {
         if (Objects.isNull(chapter.getBookName())) {
             chapter.setBookName(Book.DEFAULT);
         }
-        if (!books.containsKey(chapter.getBookName())) {
-            books.put(chapter.getBookName(), new Book(chapter.getBookName()));
+        String bookName = chapter.getBookName();
+        if (!books.containsKey(bookName)) {
+            books.put(bookName, new Book(bookName, bookName));
         }
-        books.get(chapter.getBookName()).getChapters().add(chapter);
+        books.get(bookName).getChapters().add(chapter);
     }
 }

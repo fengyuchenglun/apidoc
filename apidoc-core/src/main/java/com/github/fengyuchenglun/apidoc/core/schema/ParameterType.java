@@ -4,7 +4,6 @@ package com.github.fengyuchenglun.apidoc.core.schema;
  * 请求参数枚举类型
  *
  * @author duanledexianxianxian
- * @date 2020 /3/29 0:37
  * @since 1.0.0
  */
 public enum ParameterType {

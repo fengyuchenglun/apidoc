@@ -1,21 +1,20 @@
 package com.github.fengyuchenglun.apidoc.core.schema;
 
-import com.github.fengyuchenglun.apidoc.core.Context;
 import com.github.javaparser.ast.comments.Comment;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.fengyuchenglun.apidoc.core.common.helper.CommentHelper;
 import com.github.fengyuchenglun.apidoc.core.common.helper.StringHelper;
 import com.google.common.collect.Maps;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import static com.github.fengyuchenglun.apidoc.core.common.Constants.DEFAULT_NODE_INDEX;
+import static com.github.fengyuchenglun.apidoc.core.common.Constants.TAG_CUSTOM_JAVA_DOC_IGNORE;
 
 /**
  * The type Node.
@@ -44,7 +43,7 @@ public class Node implements Comparable<Node> {
     /**
      * 节点索引
      */
-    int index = Context.DEFAULT_NODE_INDEX;
+    int index = DEFAULT_NODE_INDEX;
     /**
      * 扩展属性
      * 如：Spring在Controller的RequestMapping，可以存在扩展属性中
@@ -100,7 +99,7 @@ public class Node implements Comparable<Node> {
             putTag(tag);
         });
 
-        getTag("index").ifPresent(tag -> setIndex(tag.getIntContent(Context.DEFAULT_NODE_INDEX)));
+        getTag("index").ifPresent(tag -> setIndex(tag.getIntContent(DEFAULT_NODE_INDEX)));
     }
 
     /**
@@ -157,6 +156,6 @@ public class Node implements Comparable<Node> {
      * @return the boolean
      */
     public boolean isIgnore() {
-        return getTag("ignore").isPresent();
+        return getTag(TAG_CUSTOM_JAVA_DOC_IGNORE).isPresent();
     }
 }

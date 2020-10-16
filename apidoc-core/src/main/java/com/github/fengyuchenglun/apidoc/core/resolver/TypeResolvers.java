@@ -22,12 +22,12 @@ public class TypeResolvers {
     /**
      * The Object type resolver.
      */
-    private ObjectTypeResolver objectTypeResolver = new ObjectTypeResolver();
+    private final ObjectTypeResolver objectTypeResolver = new ObjectTypeResolver();
 
     /**
      * 类型解析器
      */
-    private List<TypeResolver> resolvers = Lists.newArrayList(
+    private final List<TypeResolver> resolvers = Lists.newArrayList(
             // 基本类型+包装类型
             new PrimitiveTypeResolver(),
             // 数组
@@ -49,7 +49,7 @@ public class TypeResolvers {
     /**
      * 名称解析器.
      */
-    private List<TypeNameResolver> nameResolvers = Lists.newArrayList();
+    private final List<TypeNameResolver> nameResolvers = Lists.newArrayList();
 
     /**
      * 获取类型信息

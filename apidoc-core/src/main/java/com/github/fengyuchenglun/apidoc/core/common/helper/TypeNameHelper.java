@@ -8,6 +8,7 @@ import java.util.Optional;
 
 /**
  * The type Type name helper.
+ *
  * @author duanledexianxianxian
  */
 public class TypeNameHelper {

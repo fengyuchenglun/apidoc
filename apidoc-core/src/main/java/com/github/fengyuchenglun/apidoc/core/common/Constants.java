@@ -7,10 +7,29 @@ import java.nio.charset.StandardCharsets;
  *
  * @author duanledexianxianxian
  * @version 1.0.0
- * @date 2020 /3/26 23:00
  * @since 1.0.0
  */
 public class Constants {
+    /**
+     * 默认-节点索引
+     */
+    public static final Integer DEFAULT_NODE_INDEX = 99;
+    /**
+     * 默认-项目编号
+     */
+    public static final String DEFAULT_PROJECT_ID = "api";
+    /**
+     * 默认-编译路径
+     */
+    public static final String DEFAULT_BUILD_PATH = "build";
+    /**
+     * 默认-代码结构
+     */
+    public static final String DEFAULT_CODE_STRUCTURE = "src/main/java";
+    /**
+     * 默认-文档版本
+     */
+    public static final String DEFAULT_VERSION = "1.0.0";
     /**
      * The constant UTF8.
      */
@@ -24,9 +43,17 @@ public class Constants {
      */
     public static final String MARKDOWN_EXTENSION = ".md";
     /**
-     * markdown模版文件默认路径
+     * markdown模版目录
      */
-    public static final  String MARKDOWN_TEMPLATE = "/templates/markdown.ftl";
+    public static final String TEMPLATE_PATH = "/templates";
+    /**
+     * 自定义tag-book
+     */
+    public static final String TAG_CUSTOM_JAVA_DOC_BOOK = "book";
+    /**
+     * 自定义tag-group
+     */
+    public static final String TAG_CUSTOM_JAVA_DOC_GROUP = "group";
     /**
      * 自定义tag-mock
      */
@@ -36,13 +63,33 @@ public class Constants {
      */
     public static final String TAG_CUSTOM_JAVA_DOC_DATA = "data";
     /**
+     * 自定义tag-ignore
+     */
+    public static final String TAG_CUSTOM_JAVA_DOC_IGNORE = "ignore";
+    /**
+     * 自定义tag-replace
+     */
+    public static final String TAG_CUSTOM_JAVA_DOC_REPLACE = "replace";
+    /**
      * javadoc-tag-return
      */
     public static final String TAG_JAVA_DOC_RETURN = "return";
+    /**
+     * javadoc-tag-code
+     */
+    public static final String TAG_JAVA_DOC_CODE = "code";
+    /**
+     * javadoc-tag-resultData
+     */
+    public static final String TAG_JAVA_DOC_RESULT_DATA = "resultData";
+    /**
+     * javadoc-tag-pageResultData
+     */
+    public static final String TAG_JAVA_DOC_PAGE_RESULT_DATA = "pageResultData";
 
     /**
      * 空格符
      */
-    public static final  String FIELD_SPACE = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+    public static final String FIELD_SPACE = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
 }

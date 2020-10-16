@@ -9,6 +9,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Path;
@@ -18,12 +19,11 @@ import java.nio.file.Path;
  * 生成markdown api文档
  *
  * @author duanledexianxianxian
- * @version 1.0.0
- * @date 2020 /3/26 19:03
  * @since 1.0.0
  */
 @Slf4j
 public class MarkdownRender implements ProjectRender {
+
     private Configuration configuration;
 
     public MarkdownRender init() {
@@ -33,6 +33,11 @@ public class MarkdownRender implements ProjectRender {
         return this;
     }
 
+
+    @Override
+    public String template() {
+        return "markdown.ftl";
+    }
 
     @Override
     public void render(Project project) {
@@ -45,27 +50,28 @@ public class MarkdownRender implements ProjectRender {
     }
 
     private void build(Project project) {
-        String templatePath = ApiDoc.getInstance().getContext().getMarkdownTemplate();
+        String templatePath = ApiDoc.getInstance().getContext().getTemplate() + "/" + template();
         String id = ApiDoc.getInstance().getContext().getId();
         Path buildPath = ApiDoc.getInstance().getContext().getBuildPath().resolve(id);
-        StringWriter writer = new StringWriter();
-
+        final StringWriter[] writer = new StringWriter[1];
         project.getBooks().forEach((name, book) -> {
+            project.setCurrentBook(name);
+            writer[0] = new StringWriter();
             Path markdownFile = buildPath.resolve(name + Constants.MARKDOWN_EXTENSION);
             try {
                 Template template = configuration.getTemplate(templatePath);
-                template.process(project, writer);
+                template.process(project, writer[0]);
             } catch (TemplateException | IOException e) {
-                log.error("Write markdown fail:{}", e.getMessage());
+                log.error("Write markdown fail", e);
             } finally {
-                writer.flush();
+                writer[0].flush();
                 try {
-                    writer.close();
+                    writer[0].close();
                 } catch (IOException e) {
-                    log.error("Write markdown fail:{}", e.getMessage());
+                    log.error("Write markdown fail", e);
                 }
             }
-            FileHelper.write(markdownFile, writer.getBuffer().toString());
+            FileHelper.write(markdownFile, writer[0].getBuffer().toString());
             log.info("Build Markdown {}", markdownFile);
         });
 

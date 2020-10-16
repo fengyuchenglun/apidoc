@@ -10,11 +10,19 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Optional;
 
 /**
+ * The type Class declaration helper.
+ *
  * @author duanledexianxianxian
  */
 @Slf4j
 public class ClassDeclarationHelper {
 
+    /**
+     * Gets parent.
+     *
+     * @param n the n
+     * @return the parent
+     */
     public static Optional<ClassOrInterfaceDeclaration> getParent(ClassOrInterfaceDeclaration n) {
         if (n.getExtendedTypes().isEmpty()) {
             return Optional.empty();
@@ -22,6 +30,12 @@ public class ClassDeclarationHelper {
         return tryToResolve(n.getExtendedTypes().get(0));
     }
 
+    /**
+     * Try to resolve optional.
+     *
+     * @param type the type
+     * @return the optional
+     */
     public static Optional<ClassOrInterfaceDeclaration> tryToResolve(ClassOrInterfaceType type) {
         try {
             ResolvedReferenceType resolvedReferenceType = type.resolve();
@@ -39,6 +53,12 @@ public class ClassDeclarationHelper {
         return Optional.empty();
     }
 
+    /**
+     * Gets class or interface package name.
+     *
+     * @param classOrInterfaceDeclaration the class or interface declaration
+     * @return the class or interface package name
+     */
     public static String getClassOrInterfacePackageName(ClassOrInterfaceDeclaration classOrInterfaceDeclaration) {
         final String[] result = {null};
         classOrInterfaceDeclaration.findCompilationUnit().ifPresent(x -> {
@@ -47,7 +67,6 @@ public class ClassDeclarationHelper {
             });
         });
         return result[0];
-
     }
 
 }

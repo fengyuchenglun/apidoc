@@ -89,6 +89,9 @@ public class Row {
      */
     public String getLabelType() {
         String javaType = this.type;
+        if (StringUtils.isBlank(javaType)) {
+            return javaType;
+        }
         Boolean isArray = false;
         if (StringUtils.endsWith(javaType, "[]")) {
             javaType = StringUtils.substringBefore(this.type, "[]");
