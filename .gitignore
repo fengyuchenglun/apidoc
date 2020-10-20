@@ -27,4 +27,4 @@ out
 build
 gradlew*
 keystore.properties
-.run
+/.run/
