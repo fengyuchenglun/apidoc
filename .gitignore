@@ -26,3 +26,4 @@ target
 out
 build
 gradlew*
+keystore.properties
