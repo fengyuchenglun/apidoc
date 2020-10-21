@@ -128,7 +128,7 @@ public class Greeting {
 <dependency>
 		<groupId>com.github.fengyuchenglun</groupId>
 		<artifactId>apidoc-springmvc</artifactId>
-		<version>最新坐标</version>
+		<version>最新版本</version>
 </dependency>
 ```
 
@@ -167,7 +167,7 @@ public class ApiTest {
 <plugin>
 	<groupId>com.github.fengyuchenglun</groupId>
 	<artifactId>apidoc-maven-plugin</artifactId>
-	<version>最新坐标</version>
+	<version>最新版本</version>
 </plugin>
 ```
 
